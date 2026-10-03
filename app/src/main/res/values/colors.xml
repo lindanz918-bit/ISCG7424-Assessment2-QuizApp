@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="quiz_app_background">#F8FAFC</color>
+    <color name="quiz_app_text_primary">#172033</color>
+    <color name="quiz_app_text_secondary">#637083</color>
+    <color name="quiz_app_surface">#FFFFFF</color>
+    <color name="quiz_app_primary">#1976D2</color>
 </resources>

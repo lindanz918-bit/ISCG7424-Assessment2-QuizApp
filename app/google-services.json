@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "852039075267",
+    "project_id": "iscg7424assessment2quizapp",
+    "storage_bucket": "iscg7424assessment2quizapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852039075267:android:33b34d976996ed921ba976",
+        "android_client_info": {
+          "package_name": "cs.linda.iscg7424assessment2quizapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGiWpS870MyTfMVZuxYIbqti2qF7f3pfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

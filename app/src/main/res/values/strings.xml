@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">ISCG7424Assessment2QuizApp</string>
+    <string name="app_name">Quiz App</string>
+    <string name="login_welcome">Welcome</string>
+    <string name="login_subtitle">Sign in to take a quiz</string>
+    <string name="first_name_label">First Name</string>
+    <string name="last_name_label">Last Name</string>
+    <string name="email_label">Email address</string>
+    <string name="password_label">Password</string>
+    <string name="confirm_password_label">Confirm Password</string>
+    <string name="login_action">Log In</string>
+    <string name="sign_up_prompt">Don’t have an account?</string>
+    <string name="sign_up_action">Sign Up</string>
 </resources>
