@@ -93,8 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                             String role = task.getResult().getString("role");
 
                             if (role.equals("admin")) {
-//                                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
-//                                startActivity(intent);
+                                Intent intent = new Intent(LoginActivity.this, CreateQuizActivity.class);
+                                startActivity(intent);
                             } else {
 //                                Intent intent = new Intent(LoginActivity.this, PlayerActivity.class);
 //                                startActivity(intent);
