@@ -2,11 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_create_quiz"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="?attr/colorSurface">
+    android:background="?attr/colorSurface"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,31 +15,21 @@
         android:paddingTop="24dp"
         android:paddingBottom="24dp">
 
-        <!-- 1. Header 部分：增加副标题提升层级 -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create New Quiz"
-            android:textColor="?attr/colorOnSurface"
+            android:textColor="@color/quiz_app_text_primary"
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Fill in the details below to generate your custom quiz"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="13sp" />
-
-        <!-- 2. Quiz Title -->
+        <!-- Title -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Quiz Title"
-            app:placeholderText="e.g. General Knowledge Challenge">
+            android:hint="Quiz Title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etQuizTitle"
@@ -48,16 +37,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- 3. API Configuration 分组 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="API Configuration"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="14sp"
-            android:textStyle="bold" />
 
         <!-- Number of Questions -->
         <com.google.android.material.textfield.TextInputLayout
@@ -105,7 +84,7 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- 4. Date Picker 部分 (统一为 OutlinedBox 样式) -->
+        <!-- Start Date Picker -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
@@ -140,7 +119,7 @@
                 android:focusable="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- 弹性布局撑开底部 -->
+        <!-- white space -->
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"

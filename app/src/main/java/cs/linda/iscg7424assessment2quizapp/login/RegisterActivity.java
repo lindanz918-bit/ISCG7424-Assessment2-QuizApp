@@ -1,4 +1,4 @@
-package cs.linda.iscg7424assessment2quizapp;
+package cs.linda.iscg7424assessment2quizapp.login;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cs.linda.iscg7424assessment2quizapp.R;
 
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;

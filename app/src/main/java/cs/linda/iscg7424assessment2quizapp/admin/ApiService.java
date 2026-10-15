@@ -1,4 +1,4 @@
-package cs.linda.iscg7424assessment2quizapp;
+package cs.linda.iscg7424assessment2quizapp.admin;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

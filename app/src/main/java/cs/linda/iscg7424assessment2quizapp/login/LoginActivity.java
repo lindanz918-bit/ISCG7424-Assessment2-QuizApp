@@ -1,4 +1,4 @@
-package cs.linda.iscg7424assessment2quizapp;
+package cs.linda.iscg7424assessment2quizapp.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import cs.linda.iscg7424assessment2quizapp.R;
+import cs.linda.iscg7424assessment2quizapp.admin.AdminMainActivity;
+import cs.linda.iscg7424assessment2quizapp.player.PlayerMainActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -93,11 +97,11 @@ public class LoginActivity extends AppCompatActivity {
                             String role = task.getResult().getString("role");
 
                             if (role.equals("admin")) {
-                                Intent intent = new Intent(LoginActivity.this, CreateQuizActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
                                 startActivity(intent);
                             } else {
-//                                Intent intent = new Intent(LoginActivity.this, PlayerActivity.class);
-//                                startActivity(intent);
+                                Intent intent = new Intent(LoginActivity.this, PlayerMainActivity.class);
+                                startActivity(intent);
                             }
                         } else {
                             Toast.makeText(LoginActivity.this, "User data not found in Firestore", Toast.LENGTH_SHORT).show();
