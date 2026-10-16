@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_quizzes"
+        android:icon="@drawable/outline_docs_24"
+        android:title="Quizzes" />
+
+    <item
+        android:id="@+id/nav_create_quiz"
+        android:icon="@drawable/outline_add_24"
+        android:title="Create" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/outline_account_box_24"
+        android:title="Profile" />
+
+</menu>
