@@ -37,14 +37,6 @@ public class PlayerQuizzesFragment extends Fragment {
         return fragment;
     }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//
-//        }
-//    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,9 +55,12 @@ public class PlayerQuizzesFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if (position == 0) {
                 tab.setText("Ongoing");
-            } else {
+            } else if (position == 1) {
                 tab.setText("Upcoming");
+            } else {
+                tab.setText("Past");
             }
+
         }).attach();
     }
 
@@ -77,14 +72,20 @@ public class PlayerQuizzesFragment extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            // position 0 为 ongoing, position 1 为 upcoming
-            String type = (position == 0) ? "ongoing" : "upcoming";
+            String type;
+            if (position == 0) {
+                type = "ongoing";
+            } else if (position == 1) {
+                type = "upcoming";
+            } else {
+                type = "past";
+            }
             return QuizListTabFragment.newInstance(type);
         }
 
         @Override
         public int getItemCount() {
-            return 2;
+            return 3;
         }
     }
 }

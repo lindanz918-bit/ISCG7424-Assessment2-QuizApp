@@ -41,7 +41,7 @@ public class PlayerMainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_player_quizzes) {
                 selectedFragment = new PlayerQuizzesFragment();
             } else if (itemId == R.id.nav_player_history) {
-//                selectedFragment = new PlayerHistoryFragment();
+                selectedFragment = new PlayerHistoryFragment();
             } else if (itemId == R.id.nav_player_profile) {
 //                selectedFragment = new PlayerProfileFragment();
             }

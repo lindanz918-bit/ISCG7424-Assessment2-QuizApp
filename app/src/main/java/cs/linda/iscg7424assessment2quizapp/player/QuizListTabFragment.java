@@ -82,11 +82,12 @@ public class QuizListTabFragment extends Fragment {
                     Intent intent = new Intent(requireContext(), TakeQuizActivity.class);
                     intent.putExtra("quizId", quiz.getId());
                     startActivity(intent);
+                } else if ("past".equalsIgnoreCase(quizType)) {
+                    Toast.makeText(requireContext(), "Viewing past quiz archive", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(requireContext(), "This quiz has not started yet!", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onEdit(QuizModel quiz) {
 
@@ -108,7 +109,30 @@ public class QuizListTabFragment extends Fragment {
         if (quizListener != null) {
             quizListener.remove();
         }
+        String currentUserId = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser() != null
+                ? com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser().getUid() : "";
 
+        if ("past".equalsIgnoreCase(quizType)) {
+            db.collection("history")
+                    .whereEqualTo("userId", currentUserId)
+                    .get()
+                    .addOnSuccessListener(historySnapshots -> {
+                        List<String> participatedQuizIds = new ArrayList<>();
+                        for (com.google.firebase.firestore.DocumentSnapshot doc : historySnapshots) {
+                            String qId = doc.getString("quizId");
+                            if (qId != null) participatedQuizIds.add(qId);
+                        }
+                        fetchQuizzes(participatedQuizIds);
+                    })
+                    .addOnFailureListener(e -> {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(requireContext(), "Error loading history: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            fetchQuizzes(new ArrayList<>());
+        }
+    }
+    private void fetchQuizzes(List<String> participatedQuizIds) {
         quizListener = db.collection("quizzes")
                 .addSnapshotListener((value, error) -> {
                     progressBar.setVisibility(View.GONE);
@@ -133,6 +157,10 @@ public class QuizListTabFragment extends Fragment {
                                     }
                                 } else if ("upcoming".equalsIgnoreCase(quizType)) {
                                     if (quiz.getStartDate().after(now)) {
+                                        quizList.add(quiz);
+                                    }
+                                } else if ("past".equalsIgnoreCase(quizType)) {
+                                    if (quiz.getEndDate().before(now) && !participatedQuizIds.contains(quiz.getId())) {
                                         quizList.add(quiz);
                                     }
                                 }

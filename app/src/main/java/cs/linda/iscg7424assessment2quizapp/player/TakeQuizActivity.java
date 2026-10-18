@@ -9,8 +9,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs.linda.iscg7424assessment2quizapp.model.QuestionHistoryModel;
 import cs.linda.iscg7424assessment2quizapp.model.QuestionModel;
 import cs.linda.iscg7424assessment2quizapp.adapter.QuestionPagerAdapter;
 import cs.linda.iscg7424assessment2quizapp.model.QuizModel;
@@ -38,7 +43,13 @@ public class TakeQuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_take_quiz);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.take_quiz_activity), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         btnQuitQuiz = findViewById(R.id.btnQuitQuiz);
         btnQuitQuiz.setOnClickListener(v -> showExitConfirmationDialog());
@@ -138,13 +149,48 @@ public class TakeQuizActivity extends AppCompatActivity {
 
     private void submitQuiz() {
         int score = 0;
+        List<QuestionHistoryModel> resultList = new ArrayList<>();
+
         for (QuestionModel q : questionList) {
-            if (q.getUserAnswer() != null && q.getUserAnswer().equalsIgnoreCase(q.getCorrectAnswer())) {
+            boolean isCorrect = q.getUserAnswer() != null && q.getUserAnswer().equalsIgnoreCase(q.getCorrectAnswer());
+            if (isCorrect) {
                 score++;
             }
+            resultList.add(new QuestionHistoryModel(
+                    q.getQuestion(),
+                    q.getUserAnswer() != null ? q.getUserAnswer() : "No Answer",
+                    q.getCorrectAnswer(),
+                    isCorrect
+            ));
         }
+        saveQuizHistoryToFirestore(score, resultList);
+    }
 
-        showRatingDialog(score);
+    private void saveQuizHistoryToFirestore(int score, List<QuestionHistoryModel> resultList) {
+        String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String historyId = db.collection("history").document().getId();
+
+        String quizTitle = "Quiz Assessment";
+
+        java.util.Map<String, Object> historyMap = new java.util.HashMap<>();
+        historyMap.put("historyId", historyId);
+        historyMap.put("userId", userId);
+        historyMap.put("quizId", quizId);
+        historyMap.put("quizTitle", quizTitle);
+        historyMap.put("score", score);
+        historyMap.put("totalQuestions", questionList.size());
+        historyMap.put("timestamp", System.currentTimeMillis());
+        historyMap.put("questionResults", resultList);
+
+        db.collection("history").document(historyId)
+                .set(historyMap)
+                .addOnSuccessListener(aVoid -> {
+                    showRatingDialog(score);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to save history: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    showRatingDialog(score);
+                });
     }
     private void showRatingDialog(int quizScore) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

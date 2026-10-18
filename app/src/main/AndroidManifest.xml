@@ -32,14 +32,6 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".CreateQuizActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".AdminQuizListActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".player.PlayerMainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
@@ -47,6 +39,9 @@
             android:name=".player.TakeQuizActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".player.HistoryDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
