@@ -43,7 +43,6 @@ public class QuestionPagerAdapter extends RecyclerView.Adapter<QuestionPagerAdap
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
         QuestionModel question = questionList.get(position);
 
-        // 1. 设置分类与难度
         if (holder.tvCategory != null) {
             holder.tvCategory.setText(question.getCategory() != null ? question.getCategory() : "General");
         }
@@ -51,12 +50,10 @@ public class QuestionPagerAdapter extends RecyclerView.Adapter<QuestionPagerAdap
             holder.tvDifficulty.setText(question.getDifficulty() != null ? question.getDifficulty().toUpperCase() : "EASY");
         }
 
-        // 2. 设置问题文本
         if (holder.tvQuestion != null) {
             holder.tvQuestion.setText(decodeHtml(question.getQuestion()));
         }
 
-        // 3. 动态加载 RadioGroup 选项，避免复用残余控件
         holder.rgOptions.removeAllViews();
         List<String> options = question.getShuffledOptions();
         if (options != null) {
@@ -68,7 +65,6 @@ public class QuestionPagerAdapter extends RecyclerView.Adapter<QuestionPagerAdap
                 rb.setTextSize(16);
                 rb.setPadding(12, 12, 12, 12);
 
-                // 恢复之前的选中状态
                 if (question.getUserAnswer() != null && question.getUserAnswer().equals(options.get(i))) {
                     rb.setChecked(true);
                 }
@@ -77,7 +73,6 @@ public class QuestionPagerAdapter extends RecyclerView.Adapter<QuestionPagerAdap
             }
         }
 
-        // 4. 判断是否已经提交过当前题（恢复反馈面板与控件禁用状态）
         if (question.isAnswered()) {
             showFeedbackUI(holder, question);
             disableRadioGroup(holder.rgOptions);
@@ -90,7 +85,6 @@ public class QuestionPagerAdapter extends RecyclerView.Adapter<QuestionPagerAdap
             holder.btnAction.setText("Submit Answer");
         }
 
-        // 5. 点击提交答案并校验逻辑
         holder.btnAction.setOnClickListener(v -> {
             int selectedId = holder.rgOptions.getCheckedRadioButtonId();
             if (selectedId == -1) {
@@ -101,11 +95,9 @@ public class QuestionPagerAdapter extends RecyclerView.Adapter<QuestionPagerAdap
             RadioButton selectedRadioButton = holder.itemView.findViewById(selectedId);
             String selectedAnswer = selectedRadioButton.getText().toString();
 
-            // 保存作答记录
             question.setUserAnswer(selectedAnswer);
             question.setAnswered(true);
 
-            // 显示反馈 UI 并禁用选择
             showFeedbackUI(holder, question);
             disableRadioGroup(holder.rgOptions);
             holder.btnAction.setEnabled(false);

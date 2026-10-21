@@ -36,7 +36,7 @@ public class TakeQuizActivity extends AppCompatActivity {
     private Button btnPrev, btnNext;
 
     private FirebaseFirestore db;
-    private String quizId;
+    private String quizId, quizTitle, quizCategory, quizDifficulty;
     private List<QuestionModel> questionList = new ArrayList<>();
     private QuestionPagerAdapter adapter;
 
@@ -55,6 +55,9 @@ public class TakeQuizActivity extends AppCompatActivity {
         btnQuitQuiz.setOnClickListener(v -> showExitConfirmationDialog());
 
         quizId = getIntent().getStringExtra("quizId");
+        quizTitle = getIntent().getStringExtra("quizTitle");
+        quizCategory = getIntent().getStringExtra("quizCategory");
+        quizDifficulty = getIntent().getStringExtra("quizDifficulty");
         if (quizId == null) {
             Toast.makeText(this, "Invalid Quiz ID", Toast.LENGTH_SHORT).show();
             finish();
@@ -170,13 +173,13 @@ public class TakeQuizActivity extends AppCompatActivity {
         String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser().getUid();
         String historyId = db.collection("history").document().getId();
 
-        String quizTitle = "Quiz Assessment";
-
         java.util.Map<String, Object> historyMap = new java.util.HashMap<>();
         historyMap.put("historyId", historyId);
         historyMap.put("userId", userId);
         historyMap.put("quizId", quizId);
         historyMap.put("quizTitle", quizTitle);
+        historyMap.put("quizCategory", quizCategory);
+        historyMap.put("quizDifficulty", quizDifficulty);
         historyMap.put("score", score);
         historyMap.put("totalQuestions", questionList.size());
         historyMap.put("timestamp", System.currentTimeMillis());

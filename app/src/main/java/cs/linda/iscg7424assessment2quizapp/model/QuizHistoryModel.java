@@ -7,6 +7,8 @@ public class QuizHistoryModel {
     private String userId;
     private String quizId;
     private String quizTitle;
+    private String quizCategory;
+    private String quizDifficulty;
     private int score;
     private int totalQuestions;
     private long timestamp;
@@ -20,6 +22,8 @@ public class QuizHistoryModel {
     public String getUserId() { return userId; }
     public String getQuizId() { return quizId; }
     public String getQuizTitle() { return quizTitle; }
+    public String getQuizCategory() { return quizCategory; }
+    public String getQuizDifficulty() { return quizDifficulty; }
     public int getScore() { return score; }
     public int getTotalQuestions() { return totalQuestions; }
     public long getTimestamp() { return timestamp; }

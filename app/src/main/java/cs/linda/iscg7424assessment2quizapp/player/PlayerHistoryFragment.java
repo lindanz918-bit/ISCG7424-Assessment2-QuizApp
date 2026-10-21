@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs.linda.iscg7424assessment2quizapp.R;
-import cs.linda.iscg7424assessment2quizapp.adapter.HistoryAdapter;
+import cs.linda.iscg7424assessment2quizapp.adapter.QuizHistoryAdapter;
 import cs.linda.iscg7424assessment2quizapp.model.QuizHistoryModel;
 
-public class PlayerHistoryFragment extends Fragment {
+public class PlayerHistoryFragment extends Fragment implements QuizHistoryAdapter.OnQuizActionListener{
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -34,7 +34,7 @@ public class PlayerHistoryFragment extends Fragment {
 
     private FirebaseFirestore db;
     private List<QuizHistoryModel> historyList = new ArrayList<>();
-    private HistoryAdapter adapter;
+    private QuizHistoryAdapter adapter;
 
     public PlayerHistoryFragment() {
         // Required empty public constructor
@@ -61,7 +61,7 @@ public class PlayerHistoryFragment extends Fragment {
         tvEmpty = view.findViewById(R.id.tvEmptyHistory);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter = new HistoryAdapter(requireContext(), historyList);
+        adapter = new QuizHistoryAdapter(requireContext(), historyList, this);
         recyclerView.setAdapter(adapter);
 
         loadHistoryFromFirestore();
@@ -104,5 +104,32 @@ public class PlayerHistoryFragment extends Fragment {
                         Toast.makeText(requireContext(), "Error loading history: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    public void onDelete(QuizHistoryModel history) {
+        if (history.getHistoryId() == null) return;
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Delete History")
+                .setMessage("Are you sure you want to delete this quiz history record?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    db.collection("history").document(history.getHistoryId())
+                            .delete()
+                            .addOnSuccessListener(aVoid -> {
+                                if (isAdded() && getContext() != null) {
+                                    Toast.makeText(requireContext(), "History deleted successfully", Toast.LENGTH_SHORT).show();
+                                }
+                                loadHistoryFromFirestore();
+                            })
+                            .addOnFailureListener(e -> {
+                                if (isAdded() && getContext() != null) {
+                                    Toast.makeText(requireContext(), "Failed to delete: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
     }
 }

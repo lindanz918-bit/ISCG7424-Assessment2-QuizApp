@@ -3,6 +3,7 @@ package cs.linda.iscg7424assessment2quizapp.login;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -12,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,7 +26,9 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     TextInputEditText etFirstName, etLastName, etEmail, etPassword, etConfirmPassword;
+    TextInputLayout tilFirstName, tilLastName, tilEmail, tilPassword, tilConfirmPassword;
     Button btnSignUp;
+    ImageView ivBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,15 @@ public class RegisterActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
+        ivBack = findViewById(R.id.ivBack);
         btnSignUp = findViewById(R.id.btnSignUp);
+        tilFirstName = findViewById(R.id.tilFirstName);
+        tilLastName = findViewById(R.id.tilLastName);
+        tilEmail = findViewById(R.id.tilEmail);
+        tilPassword = findViewById(R.id.tilPassword);
+        tilConfirmPassword = findViewById(R.id.tilConfirmPassword);
+
+        ivBack.setOnClickListener(v -> finish());
 
         btnSignUp.setOnClickListener(v -> {
             String firstName = etFirstName.getText().toString();
@@ -54,12 +66,21 @@ public class RegisterActivity extends AppCompatActivity {
             String confirmPassword = etConfirmPassword.getText().toString();
 
             if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                tilEmail.setError("Email cannot be empty");
+                tilPassword.setError("Password cannot be empty");
+                etEmail.requestFocus();
+                return;
+            }
+
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                tilEmail.setError("Please enter a valid email address");
+                etEmail.requestFocus();
                 return;
             }
 
             if (!password.equals(confirmPassword)) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                tilConfirmPassword.setError("Passwords do not match");
+                etConfirmPassword.requestFocus();
                 return;
             }
             String role = "player";

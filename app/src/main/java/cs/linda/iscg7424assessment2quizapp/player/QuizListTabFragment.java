@@ -81,6 +81,9 @@ public class QuizListTabFragment extends Fragment {
                     Toast.makeText(requireContext(), "Starting quiz...", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(requireContext(), TakeQuizActivity.class);
                     intent.putExtra("quizId", quiz.getId());
+                    intent.putExtra("quizTitle", quiz.getTitle());
+                    intent.putExtra("quizCategory", quiz.getCategory());
+                    intent.putExtra("quizDifficulty", quiz.getDifficulty());
                     startActivity(intent);
                 } else if ("past".equalsIgnoreCase(quizType)) {
                     Toast.makeText(requireContext(), "Viewing past quiz archive", Toast.LENGTH_SHORT).show();

@@ -104,16 +104,19 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
             holder.btnDeleteQuiz.setVisibility(View.GONE);
             holder.btnStartQuiz.setVisibility(View.VISIBLE);
             if ("ACTIVE".equals(status)) {
+                holder.tvStatusBadge.setText("Active");
                 holder.btnStartQuiz.setEnabled(true);
                 holder.btnStartQuiz.setText("Start");
                 holder.btnStartQuiz.setOnClickListener(v -> {
                     if (listener != null) listener.onStart(quiz);
                 });
             } else if ("UPCOMING".equals(status)) {
+                holder.tvStatusBadge.setText("Upcoming");
                 holder.btnStartQuiz.setEnabled(false);
                 holder.btnStartQuiz.setText("Upcoming");
                 holder.btnStartQuiz.setOnClickListener(null);
             } else {
+                holder.tvStatusBadge.setText("Ended");
                 holder.btnStartQuiz.setEnabled(false);
                 holder.btnStartQuiz.setText("Ended");
                 holder.btnStartQuiz.setOnClickListener(null);

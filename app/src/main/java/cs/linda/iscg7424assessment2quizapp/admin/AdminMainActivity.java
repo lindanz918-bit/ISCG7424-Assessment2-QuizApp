@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import cs.linda.iscg7424assessment2quizapp.R;
+import cs.linda.iscg7424assessment2quizapp.profile.ProfileFragment;
 
 public class AdminMainActivity extends AppCompatActivity {
 
@@ -42,7 +43,7 @@ public class AdminMainActivity extends AppCompatActivity {
             } else if (itemId == R.id.nav_create_quiz) {
                 selectedFragment = new AdminCreateQuizFragment();
             } else if (itemId == R.id.nav_profile) {
-                selectedFragment = new AdminProfileFragment();
+                selectedFragment = new ProfileFragment();
             }
 
             if (selectedFragment != null) {

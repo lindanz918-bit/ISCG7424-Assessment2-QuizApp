@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Admin Profile"
+            android:text="Profile"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="24dp" />
@@ -38,17 +38,38 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Full Name"
+                    android:text="First Name"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tvFullName"
+                <EditText
+                    android:id="@+id/etFirstName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading..."
+                    android:inputType="textPersonName"
+                    android:hint="First Name"
                     android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Name"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/etLastName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="Last Name"
+                    android:textSize="16sp"
                     android:layout_marginBottom="12dp" />
 
                 <View
@@ -89,12 +110,18 @@
                     android:id="@+id/tvRole"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Admin"
-                    android:textSize="16sp"
-                    android:textStyle="italic" />
+                    android:text="Loading..."
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Save" />
 
         <Button
             android:id="@+id/btnChangePassword"
@@ -102,6 +129,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:text="Change Password" />
+
+
 
         <Button
             android:id="@+id/btnLogout"

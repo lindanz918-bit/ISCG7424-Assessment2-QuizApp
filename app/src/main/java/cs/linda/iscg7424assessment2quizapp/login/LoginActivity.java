@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     TextInputEditText etEmail, etPassword;
+    TextInputLayout tilEmail, tilPassword;
     Button btnLogin;
     TextView tvSignUp;
 
@@ -47,11 +49,38 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvSignUp = findViewById(R.id.tvSignUp);
+        tilEmail = findViewById(R.id.tilEmail);
+        tilPassword = findViewById(R.id.tilPassword);
 
 
         btnLogin.setOnClickListener(v -> {
-            String email = etEmail.getText().toString();
-            String password = etPassword.getText().toString();
+            String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
+            String password = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
+
+            if (email.isEmpty()) {
+                tilEmail.setError("Email cannot be empty");
+                etEmail.requestFocus();
+                return;
+            }
+
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                tilEmail.setError("Please enter a valid email address");
+                etEmail.requestFocus();
+                return;
+            }
+
+            if (password.isEmpty()) {
+                tilPassword.setError("Password cannot be empty");
+                etPassword.requestFocus();
+                return;
+            }
+
+            if (password.length() < 6) {
+                tilPassword.setError("Password must be at least 6 characters");
+                etPassword.requestFocus();
+                return;
+            }
+
             loginUser(email, password);
         });
 

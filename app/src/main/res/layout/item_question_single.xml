@@ -20,7 +20,6 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- 1. 题目分类与难度展示 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,7 +43,6 @@
                     tools:text="HARD" />
             </LinearLayout>
 
-            <!-- 2. 问题文本 -->
             <TextView
                 android:id="@+id/tvQuestion"
                 android:layout_width="match_parent"
@@ -55,7 +53,6 @@
                 android:textStyle="bold"
                 tools:text="Which one of the following is NOT a sub-company of the Volkswagen Group?" />
 
-            <!-- 3. 动态加载选项的单选按钮组 -->
             <RadioGroup
                 android:id="@+id/rgOptions"
                 android:layout_width="match_parent"
@@ -63,7 +60,6 @@
                 android:layout_marginTop="20dp">
             </RadioGroup>
 
-            <!-- 4. 提交后的答题反馈面板（默认隐藏 GONE） -->
             <LinearLayout
                 android:id="@+id/layoutFeedback"
                 android:layout_width="match_parent"
@@ -92,13 +88,11 @@
                     tools:text="Correct Answer: Opel" />
             </LinearLayout>
 
-            <!-- 填充垂直空间的空白区 -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <!-- 5. 校验单题答案的按钮 -->
             <Button
                 android:id="@+id/btnAction"
                 android:layout_width="match_parent"
