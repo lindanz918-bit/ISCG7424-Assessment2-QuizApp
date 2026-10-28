@@ -54,6 +54,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         holder.tvQuizTitle.setText(quiz.getTitle());
         holder.tvQuizCategory.setText(String.format("Category: %s", quiz.getCategory()));
         holder.tvQuizDifficulty.setText(String.format("Difficulty: %s", quiz.getDifficulty()));
+        holder.tvQuizType.setText(String.format("Type: %s", quiz.getType()));
         if (holder.tvQuizQuestions != null) {
             holder.tvQuizQuestions.setText("Questions: " + quiz.getQuestionCount());
         }
@@ -130,7 +131,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     }
 
     static class QuizViewHolder extends RecyclerView.ViewHolder {
-        TextView tvQuizTitle, tvStatusBadge, tvQuizCategory, tvQuizDifficulty, tvQuizQuestions, tvQuizDateRange, tvRatingScore, tvSubmissionCount;
+        TextView tvQuizTitle, tvStatusBadge, tvQuizCategory, tvQuizDifficulty, tvQuizType, tvQuizQuestions, tvQuizDateRange, tvRatingScore, tvSubmissionCount;
         Button btnStartQuiz, btnEditQuiz, btnDeleteQuiz;
 
         public QuizViewHolder(@NonNull View itemView) {
@@ -139,6 +140,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
             tvStatusBadge = itemView.findViewById(R.id.tvStatusBadge);
             tvQuizCategory = itemView.findViewById(R.id.tvQuizCategory);
             tvQuizDifficulty = itemView.findViewById(R.id.tvQuizDifficulty);
+            tvQuizType = itemView.findViewById(R.id.tvQuizType);
             tvQuizQuestions = itemView.findViewById(R.id.tvQuizQuestions);
             tvQuizDateRange = itemView.findViewById(R.id.tvQuizDateRange);
             tvRatingScore = itemView.findViewById(R.id.tvRatingScore);

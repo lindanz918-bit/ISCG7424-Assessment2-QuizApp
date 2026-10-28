@@ -46,6 +46,7 @@ public class QuizHistoryAdapter extends RecyclerView.Adapter<QuizHistoryAdapter.
         holder.tvTitle.setText(history.getQuizTitle());
         holder.tvCategory.setText("Category: " + history.getQuizCategory());
         holder.tvDifficulty.setText("Difficulty: " + history.getQuizDifficulty());
+        holder.tvType.setText("Type: " + history.getQuizType());
         holder.tvScore.setText("Score: " + history.getScore() + " / " + history.getTotalQuestions());
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -65,13 +66,14 @@ public class QuizHistoryAdapter extends RecyclerView.Adapter<QuizHistoryAdapter.
     public int getItemCount() { return historyList.size(); }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvCategory, tvDifficulty, tvScore, tvDate;
+        TextView tvTitle, tvCategory, tvDifficulty, tvType, tvScore, tvDate;
         Button btnViewQuiz, btnDeleteQuiz;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvHistoryTitle);
             tvCategory = itemView.findViewById(R.id.tvQuizCategory);
             tvDifficulty = itemView.findViewById(R.id.tvQuizDifficulty);
+            tvType = itemView.findViewById(R.id.tvQuizType);
             tvScore = itemView.findViewById(R.id.tvHistoryScore);
             tvDate = itemView.findViewById(R.id.tvHistoryDate);
             btnViewQuiz = itemView.findViewById(R.id.btnViewQuiz);

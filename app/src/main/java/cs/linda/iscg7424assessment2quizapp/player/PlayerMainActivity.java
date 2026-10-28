@@ -43,7 +43,7 @@ public class PlayerMainActivity extends AppCompatActivity {
                 selectedFragment = new PlayerQuizzesFragment();
             } else if (itemId == R.id.nav_player_history) {
                 selectedFragment = new PlayerHistoryFragment();
-            } else if (itemId == R.id.nav_player_profile) {
+            } else if (itemId == R.id.nav_player_account) {
                 selectedFragment = new ProfileFragment();
             }
 

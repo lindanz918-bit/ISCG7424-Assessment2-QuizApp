@@ -17,7 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -41,11 +43,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AdminCreateQuizFragment extends Fragment {
-    private TextInputEditText etQuizTitle, etAmount;
-    private AutoCompleteTextView spinnerDifficulty, spinnerCategory;
+
+    private TextInputLayout layoutQuizTitle, layoutAmount, layoutCategory, layoutDifficulty, layoutType, layoutStartDate, layoutEndDate;
+    private TextInputEditText etQuizTitle, etAmount, etStartDate, etEndDate;
+    private AutoCompleteTextView spinnerDifficulty, spinnerCategory, spinnerType;
     private Button btnCreateQuiz;
     private ProgressBar progressBar;
-    private EditText etStartDate, etEndDate;
     private FirebaseFirestore db;
     private ApiService apiService;
 
@@ -74,21 +77,26 @@ public class AdminCreateQuizFragment extends Fragment {
         etAmount = view.findViewById(R.id.etAmount);
         spinnerDifficulty = view.findViewById(R.id.spinnerDifficulty);
         spinnerCategory = view.findViewById(R.id.spinnerCategory);
+        spinnerType = view.findViewById(R.id.spinnerType);
         etStartDate = view.findViewById(R.id.etStartDate);
         etEndDate = view.findViewById(R.id.etEndDate);
         progressBar = view.findViewById(R.id.progressBar);
         btnCreateQuiz = view.findViewById(R.id.btnCreateQuiz);
 
-        String[] difficulties = new String[]{"any", "easy", "medium", "hard"};
-        ArrayAdapter<String> difficultyAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, difficulties);
-        difficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDifficulty.setAdapter(difficultyAdapter);
-
-        String[] categories = new String[]{"Art", "Sports", "History", "Computers", "Animals"};
+        String[] categories = new String[]{"Any Category", "Sports", "Vehicles", "General Knowledge", "History", "Animals", "Computers", "Art", "Geography", "Music", "Celebrities", "Science & Nature"};
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, categories);
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(categoryAdapter);
 
+        String[] difficulties = new String[]{"Any Difficulty", "Easy", "Medium", "Hard"};
+        ArrayAdapter<String> difficultyAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, difficulties);
+        difficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDifficulty.setAdapter(difficultyAdapter);
+
+        String[] types = new String[]{"Any Type", "Multiple Choice", "True/False"};
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, types);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerType.setAdapter(typeAdapter);
 
         etStartDate.setOnClickListener(v -> showDatePickerDialog("start"));
         etEndDate.setOnClickListener(v -> showDatePickerDialog("end"));
@@ -104,16 +112,83 @@ public class AdminCreateQuizFragment extends Fragment {
     }
 
     private void createAndSaveQuiz() {
-        String quizTitle = etQuizTitle.getText().toString().trim();
-        String amountStr = etAmount.getText().toString().trim();
+        String quizTitle = etQuizTitle.getText() != null ? etQuizTitle.getText().toString().trim() : "";
+        String amountStr = etAmount.getText() != null ? etAmount.getText().toString().trim() : "";
+        String category = spinnerCategory.getText() != null ? spinnerCategory.getText().toString().trim() : "";
+        String difficulty = spinnerDifficulty.getText() != null ? spinnerDifficulty.getText().toString().trim() : "";
+        String type = spinnerType.getText() != null ? spinnerType.getText().toString().trim() : "";
+        String startDate = etStartDate.getText() != null ? etStartDate.getText().toString().trim() : "";
+        String endDate = etEndDate.getText() != null ? etEndDate.getText().toString().trim() : "";
+
+        boolean isValid = true;
+        TextInputLayout titleLayout = (TextInputLayout) etQuizTitle.getParent().getParent();
 
         if (TextUtils.isEmpty(quizTitle)) {
-            Toast.makeText(requireContext(), "Please enter quiz title", Toast.LENGTH_SHORT).show();
-            return;
+            titleLayout.setError("Please enter quiz title");
+            isValid = false;
+        } else {
+            titleLayout.setError(null);
         }
 
+        TextInputLayout amountLayout = (TextInputLayout) etAmount.getParent().getParent();
         if (TextUtils.isEmpty(amountStr)) {
-            Toast.makeText(requireContext(), "Please enter question amount", Toast.LENGTH_SHORT).show();
+            amountLayout.setError("Please enter question amount");
+            isValid = false;
+        } else {
+            try {
+                int amount = Integer.parseInt(amountStr);
+                if (amount < 1 || amount > 50) {
+                    amountLayout.setError("Amount must be between 1 and 50");
+                    isValid = false;
+                } else {
+                    amountLayout.setError(null);
+                }
+            } catch (NumberFormatException e) {
+                amountLayout.setError("Invalid number format");
+                isValid = false;
+            }
+        }
+
+        TextInputLayout categoryLayout = (TextInputLayout) spinnerCategory.getParent().getParent();
+        if (TextUtils.isEmpty(category)) {
+            categoryLayout.setError("Please select a category");
+            isValid = false;
+        } else {
+            categoryLayout.setError(null);
+        }
+
+        TextInputLayout diffLayout = (TextInputLayout) spinnerDifficulty.getParent().getParent();
+        if (TextUtils.isEmpty(difficulty)) {
+            diffLayout.setError("Please select difficulty");
+            isValid = false;
+        } else {
+            diffLayout.setError(null);
+        }
+        TextInputLayout typeLayout = (TextInputLayout) spinnerType.getParent().getParent();
+        if (TextUtils.isEmpty(type)) {
+            typeLayout.setError("Please select type");
+            isValid = false;
+        } else {
+            typeLayout.setError(null);
+        }
+
+        TextInputLayout startLayout = (TextInputLayout) etStartDate.getParent().getParent();
+        if (TextUtils.isEmpty(startDate)) {
+            startLayout.setError("Please select start date");
+            isValid = false;
+        } else {
+            startLayout.setError(null);
+        }
+
+        TextInputLayout endLayout = (TextInputLayout) etEndDate.getParent().getParent();
+        if (TextUtils.isEmpty(endDate)) {
+            endLayout.setError("Please select end date");
+            isValid = false;
+        } else {
+            endLayout.setError(null);
+        }
+
+        if (!isValid) {
             return;
         }
 
@@ -121,41 +196,17 @@ public class AdminCreateQuizFragment extends Fragment {
         btnCreateQuiz.setEnabled(false);
 
         int amount = Integer.parseInt(amountStr);
-
-        Integer categoryId = null;
-        String selectedCategory = spinnerCategory.getText().toString();
-        if (!"Any Category".equalsIgnoreCase(selectedCategory)) {
-            if ("Sports".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 21;
-            } else if ("Vehicles".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 28;
-            } else if ("General Knowledge".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 9;
-            } else if ("History".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 23;
-            } else if ("Animals".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 27;
-            } else if ("Computers".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 18;
-            } else if ("Art".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 25;
-            } else if ("Geography".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 22;
-            } else if ("Music".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 12;
-            } else if ("Celebrities".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 26;
-            } else if ("Science & Nature".equalsIgnoreCase(selectedCategory)) {
-                categoryId = 17;
-            } else {
-                Toast.makeText(requireContext(), "Invalid category", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        Integer categoryId = getCategoryId(category);
+        if (categoryId == null && !"Any Category".equalsIgnoreCase(category)) {
+            progressBar.setVisibility(View.GONE);
+            btnCreateQuiz.setEnabled(true);
+            categoryLayout.setError("Invalid category");
+            return;
         }
 
-        String selectedDifficulty = spinnerDifficulty.getText().toString();
-        String difficultyParam = "any".equals(selectedDifficulty) ? null : selectedDifficulty;
-        String typeParam = "multiple";
+
+        String difficultyParam = "Any Difficulty".equals(difficulty) ? null : difficulty.trim().toLowerCase();
+        String typeParam = "Any Type".equals(type) ? null : getType(type);
 
         apiService.getQuestions(amount, categoryId, difficultyParam, typeParam).enqueue(new Callback<QuizResponse>() {
             @Override
@@ -186,14 +237,60 @@ public class AdminCreateQuizFragment extends Fragment {
         });
     }
 
+    private Integer getCategoryId(String selectedCategory) {
+        if ("Sports".equalsIgnoreCase(selectedCategory)) return 21;
+        if ("Vehicles".equalsIgnoreCase(selectedCategory)) return 28;
+        if ("General Knowledge".equalsIgnoreCase(selectedCategory)) return 9;
+        if ("History".equalsIgnoreCase(selectedCategory)) return 23;
+        if ("Animals".equalsIgnoreCase(selectedCategory)) return 27;
+        if ("Computers".equalsIgnoreCase(selectedCategory)) return 18;
+        if ("Art".equalsIgnoreCase(selectedCategory)) return 25;
+        if ("Geography".equalsIgnoreCase(selectedCategory)) return 22;
+        if ("Music".equalsIgnoreCase(selectedCategory)) return 12;
+        if ("Celebrities".equalsIgnoreCase(selectedCategory)) return 26;
+        if ("Science & Nature".equalsIgnoreCase(selectedCategory)) return 17;
+        return null;
+    }
+
+    private String getType(String selectedType) {
+        if (selectedType == null) return null;
+
+        if ("Multiple Choice".equalsIgnoreCase(selectedType)) {
+            return "multiple";
+        } else if ("True/False".equalsIgnoreCase(selectedType)) {
+            return "boolean";
+        }
+        return null;
+    }
+
     private void saveToFireStore(String quizTitle, @UnknownNullability List<QuestionModel> questions) {
+
+        if (questions != null) {
+            for (QuestionModel q : questions) {
+                java.util.List<String> options = new java.util.ArrayList<>();
+                if (q.getIncorrectAnswers() != null) {
+                    options.addAll(q.getIncorrectAnswers());
+                }
+                if (q.getCorrectAnswer() != null) {
+                    options.add(q.getCorrectAnswer());
+                }
+                java.util.Collections.shuffle(options);
+                q.setShuffledOptions(options);
+
+                if (q.getCategory() != null) {
+                    q.setCategory(q.getCategory().replace("&amp;", "&"));
+                }
+            }
+        }
+
         Map<String, Object> quizData = new HashMap<>();
         quizData.put("title", quizTitle);
-        quizData.put("questionCount", questions.size());
-        quizData.put("difficulty", spinnerDifficulty.getText().toString());
+        quizData.put("questionCount", questions != null ? questions.size() : 0);
         quizData.put("category", spinnerCategory.getText().toString());
+        quizData.put("difficulty", spinnerDifficulty.getText().toString());
+        quizData.put("type", spinnerType.getText().toString());
 
-        //Transfer sting date to Date which firestore recognized as timestamp type.
+        // Transfer string date to Date which firestore recognized as timestamp type.
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         try {
             Date startDate = dateFormat.parse(etStartDate.getText().toString());
@@ -222,15 +319,18 @@ public class AdminCreateQuizFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(requireContext(), "Quiz created successfully!", Toast.LENGTH_SHORT).show();
                     btnCreateQuiz.setEnabled(true);
+                    // go back to quiz list
+                    BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottomNavigationView);
+                    if (bottomNav != null) {
+                        bottomNav.setSelectedItemId(R.id.nav_quizzes);
+                    }
                 })
                 .addOnFailureListener(e -> {
                     progressBar.setVisibility(View.GONE);
                     btnCreateQuiz.setEnabled(true);
                     Toast.makeText(requireContext(), "Error saving quiz: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
-
     }
-
     private void showDatePickerDialog(String type) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);

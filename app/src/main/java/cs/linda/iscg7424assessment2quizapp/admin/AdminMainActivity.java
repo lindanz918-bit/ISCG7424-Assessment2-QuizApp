@@ -42,7 +42,7 @@ public class AdminMainActivity extends AppCompatActivity {
                 selectedFragment = new AdminQuizListFragment();
             } else if (itemId == R.id.nav_create_quiz) {
                 selectedFragment = new AdminCreateQuizFragment();
-            } else if (itemId == R.id.nav_profile) {
+            } else if (itemId == R.id.nav_account) {
                 selectedFragment = new ProfileFragment();
             }
 

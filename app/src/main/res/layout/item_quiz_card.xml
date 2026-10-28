@@ -63,6 +63,15 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/tvQuizType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Type: Multiple"
+            android:textColor="@color/quiz_app_text_primary"
+            android:textSize="13sp" />
+
+        <TextView
             android:id="@+id/tvQuizQuestions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

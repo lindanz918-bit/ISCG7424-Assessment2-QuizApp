@@ -12,6 +12,7 @@ public class QuizModel {
     private String title;
     private String category;
     private String difficulty;
+    private String type;
     private int questionCount;
     private Date startDate;
     private Date endDate;
@@ -38,6 +39,7 @@ public class QuizModel {
     public String getTitle() { return title; }
     public String getCategory() { return category; }
     public String getDifficulty() { return difficulty; }
+    public String getType() { return type; }
     public int getQuestionCount() { return questionCount; }
     public Date getStartDate() { return startDate; }
     public Date getEndDate() { return endDate; }
@@ -51,6 +53,7 @@ public class QuizModel {
     public void setTitle(String title) { this.title = title; }
     public void setCategory(String category) { this.category = category; }
     public void setDifficulty(String difficulty) { this.difficulty = difficulty; }
+    public void setType(String type) {this.type = type; }
     public void setQuestionCount(int questionCount) { this.questionCount = questionCount; }
     public void setStartDate(Date startDate) { this.startDate = startDate; }
     public void setEndDate(Date endDate) { this.endDate = endDate; }

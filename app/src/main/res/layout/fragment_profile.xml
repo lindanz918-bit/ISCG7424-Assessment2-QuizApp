@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Profile"
+            android:text="Account"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="24dp" />

@@ -36,7 +36,7 @@ public class TakeQuizActivity extends AppCompatActivity {
     private Button btnPrev, btnNext;
 
     private FirebaseFirestore db;
-    private String quizId, quizTitle, quizCategory, quizDifficulty;
+    private String quizId, quizTitle, quizCategory, quizDifficulty, quizType;
     private List<QuestionModel> questionList = new ArrayList<>();
     private QuestionPagerAdapter adapter;
 
@@ -58,6 +58,8 @@ public class TakeQuizActivity extends AppCompatActivity {
         quizTitle = getIntent().getStringExtra("quizTitle");
         quizCategory = getIntent().getStringExtra("quizCategory");
         quizDifficulty = getIntent().getStringExtra("quizDifficulty");
+        quizType = getIntent().getStringExtra("quizType");
+
         if (quizId == null) {
             Toast.makeText(this, "Invalid Quiz ID", Toast.LENGTH_SHORT).show();
             finish();
@@ -180,6 +182,7 @@ public class TakeQuizActivity extends AppCompatActivity {
         historyMap.put("quizTitle", quizTitle);
         historyMap.put("quizCategory", quizCategory);
         historyMap.put("quizDifficulty", quizDifficulty);
+        historyMap.put("quizType", quizType);
         historyMap.put("score", score);
         historyMap.put("totalQuestions", questionList.size());
         historyMap.put("timestamp", System.currentTimeMillis());
