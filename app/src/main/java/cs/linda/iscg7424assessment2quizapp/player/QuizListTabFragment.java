@@ -92,6 +92,7 @@ public class QuizListTabFragment extends Fragment {
                     Toast.makeText(requireContext(), "This quiz has not started yet!", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onEdit(QuizModel quiz) {
 
@@ -116,27 +117,23 @@ public class QuizListTabFragment extends Fragment {
         String currentUserId = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser() != null
                 ? com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser().getUid() : "";
 
-        if ("past".equalsIgnoreCase(quizType)) {
-            db.collection("history")
-                    .whereEqualTo("userId", currentUserId)
-                    .get()
-                    .addOnSuccessListener(historySnapshots -> {
-                        List<String> participatedQuizIds = new ArrayList<>();
-                        for (com.google.firebase.firestore.DocumentSnapshot doc : historySnapshots) {
-                            String qId = doc.getString("quizId");
-                            if (qId != null) participatedQuizIds.add(qId);
-                        }
-                        fetchQuizzes(participatedQuizIds);
-                    })
-                    .addOnFailureListener(e -> {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(requireContext(), "Error loading history: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-        } else {
-            fetchQuizzes(new ArrayList<>());
-        }
+        db.collection("history")
+                .whereEqualTo("userId", currentUserId)
+                .get()
+                .addOnSuccessListener(historySnapshots -> {
+                    List<String> completedQuizIds = new ArrayList<>();
+                    for (com.google.firebase.firestore.DocumentSnapshot doc : historySnapshots) {
+                        String qId = doc.getString("quizId");
+                        if (qId != null) completedQuizIds.add(qId);
+                    }
+                    fetchQuizzes(completedQuizIds);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(requireContext(), "Error loading history: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    fetchQuizzes(new ArrayList<>());
+                });
     }
-    private void fetchQuizzes(List<String> participatedQuizIds) {
+    private void fetchQuizzes(List<String> completedQuizIds) {
         quizListener = db.collection("quizzes")
                 .addSnapshotListener((value, error) -> {
                     progressBar.setVisibility(View.GONE);
@@ -154,6 +151,12 @@ public class QuizListTabFragment extends Fragment {
                             QuizModel quiz = doc.toObject(QuizModel.class);
                             quiz.setId(doc.getId());
 
+                            if (completedQuizIds.contains(quiz.getId())) {
+                                quiz.setHasCompleted(true);
+                            } else {
+                                quiz.setHasCompleted(false);
+                            }
+
                             if (quiz.getStartDate() != null && quiz.getEndDate() != null) {
                                 if ("ongoing".equalsIgnoreCase(quizType)) {
                                     if (quiz.getStartDate().before(now) && quiz.getEndDate().after(now)) {
@@ -164,7 +167,7 @@ public class QuizListTabFragment extends Fragment {
                                         quizList.add(quiz);
                                     }
                                 } else if ("past".equalsIgnoreCase(quizType)) {
-                                    if (quiz.getEndDate().before(now) && !participatedQuizIds.contains(quiz.getId())) {
+                                    if (quiz.getEndDate().before(now)) {
                                         quizList.add(quiz);
                                     }
                                 }
@@ -190,5 +193,10 @@ public class QuizListTabFragment extends Fragment {
         if (quizListener != null) {
             quizListener.remove();
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadQuizzesFromFirestoreRealtime();
     }
 }

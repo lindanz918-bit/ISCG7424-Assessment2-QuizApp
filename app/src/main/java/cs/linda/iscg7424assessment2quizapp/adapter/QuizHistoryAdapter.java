@@ -2,6 +2,7 @@ package cs.linda.iscg7424assessment2quizapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,12 @@ public class QuizHistoryAdapter extends RecyclerView.Adapter<QuizHistoryAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         QuizHistoryModel history = historyList.get(position);
+
+        if (holder.tvStatusBadge != null) {
+            holder.tvStatusBadge.setText("Completed");
+            holder.tvStatusBadge.setBackgroundColor(Color.parseColor("#9E9E9E"));
+        }
+
         holder.tvTitle.setText(history.getQuizTitle());
         holder.tvCategory.setText("Category: " + history.getQuizCategory());
         holder.tvDifficulty.setText("Difficulty: " + history.getQuizDifficulty());
@@ -66,12 +73,13 @@ public class QuizHistoryAdapter extends RecyclerView.Adapter<QuizHistoryAdapter.
     public int getItemCount() { return historyList.size(); }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvCategory, tvDifficulty, tvType, tvScore, tvDate;
+        TextView tvTitle, tvStatusBadge, tvCategory, tvDifficulty, tvType, tvScore, tvDate;
         Button btnViewQuiz, btnDeleteQuiz;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvHistoryTitle);
             tvCategory = itemView.findViewById(R.id.tvQuizCategory);
+            tvStatusBadge = itemView.findViewById(R.id.tvStatusBadge);
             tvDifficulty = itemView.findViewById(R.id.tvQuizDifficulty);
             tvType = itemView.findViewById(R.id.tvQuizType);
             tvScore = itemView.findViewById(R.id.tvHistoryScore);

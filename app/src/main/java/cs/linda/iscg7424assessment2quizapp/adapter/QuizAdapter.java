@@ -105,19 +105,30 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
             holder.btnDeleteQuiz.setVisibility(View.GONE);
             holder.btnStartQuiz.setVisibility(View.VISIBLE);
             if ("ACTIVE".equals(status)) {
-                holder.tvStatusBadge.setText("Active");
-                holder.btnStartQuiz.setEnabled(true);
-                holder.btnStartQuiz.setText("Start");
-                holder.btnStartQuiz.setOnClickListener(v -> {
-                    if (listener != null) listener.onStart(quiz);
-                });
+                if (quiz.isHasCompleted()) {
+                    holder.tvStatusBadge.setText("Completed");
+                    holder.tvStatusBadge.setBackgroundColor(Color.parseColor("#9E9E9E")); // 灰色
+                    holder.btnStartQuiz.setEnabled(false);
+                    holder.btnStartQuiz.setText("Completed");
+                    holder.btnStartQuiz.setOnClickListener(null);
+                } else {
+                    holder.tvStatusBadge.setText("Active");
+                    holder.tvStatusBadge.setBackgroundColor(Color.parseColor("#4CAF50"));
+                    holder.btnStartQuiz.setEnabled(true);
+                    holder.btnStartQuiz.setText("Start");
+                    holder.btnStartQuiz.setOnClickListener(v -> {
+                        if (listener != null) listener.onStart(quiz);
+                    });
+                }
             } else if ("UPCOMING".equals(status)) {
                 holder.tvStatusBadge.setText("Upcoming");
+                holder.tvStatusBadge.setBackgroundColor(Color.parseColor("#2196F3"));
                 holder.btnStartQuiz.setEnabled(false);
                 holder.btnStartQuiz.setText("Upcoming");
                 holder.btnStartQuiz.setOnClickListener(null);
             } else {
                 holder.tvStatusBadge.setText("Ended");
+                holder.tvStatusBadge.setBackgroundColor(Color.parseColor("#9E9E9E"));
                 holder.btnStartQuiz.setEnabled(false);
                 holder.btnStartQuiz.setText("Ended");
                 holder.btnStartQuiz.setOnClickListener(null);

@@ -19,6 +19,7 @@ public class QuizModel {
     private int totalSubmissions;
     private int totalRatingScore;
     private double averageRating;
+    private boolean hasCompleted = false;
     private List<QuestionModel> questions = new ArrayList<>();
 
     public QuizModel() {}
@@ -46,6 +47,9 @@ public class QuizModel {
     public int getTotalSubmissions() { return totalSubmissions; }
     public int getTotalRatingScore() { return totalRatingScore; }
     public double getAverageRating() { return averageRating; }
+    public boolean isHasCompleted() {
+        return hasCompleted;
+    }
     public List<QuestionModel> getQuestions() { return questions; }
 
     // ================= Setters =================
@@ -61,4 +65,7 @@ public class QuizModel {
     public void setTotalRatingScore(int totalRatingScore) { this.totalRatingScore = totalRatingScore; }
     public void setAverageRating(double averageRating) { this.averageRating = averageRating; }
     public void setQuestions(List<QuestionModel> questions) { this.questions = questions; }
+    public void setHasCompleted(boolean hasCompleted) {
+        this.hasCompleted = hasCompleted;
+    }
 }

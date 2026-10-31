@@ -23,7 +23,7 @@
                 android:id="@+id/tvHistoryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/tvHistoryBadge"
+                android:layout_toStartOf="@id/tvStatusBadge"
                 android:layout_alignParentStart="true"
                 android:text="General Science Quiz"
                 android:textColor="@color/quiz_app_text_primary"
@@ -31,7 +31,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvHistoryBadge"
+                android:id="@+id/tvStatusBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

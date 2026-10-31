@@ -153,6 +153,29 @@ public class TakeQuizActivity extends AppCompatActivity {
     }
 
     private void submitQuiz() {
+        int unansweredCount = 0;
+        for (QuestionModel q : questionList) {
+            if (q.getUserAnswer() == null || q.getUserAnswer().trim().isEmpty()) {
+                unansweredCount++;
+            }
+        }
+        if (unansweredCount > 0) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Unanswered Questions")
+                    .setMessage("You have " + unansweredCount + " unanswered question(s). Are you sure you want to submit?")
+                    .setPositiveButton("Yes, Submit", (dialog, which) -> {
+                        executeQuizSubmission();
+                    })
+                    .setNegativeButton("Go Back", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
+        } else {
+            executeQuizSubmission();
+        }
+    }
+
+    private void executeQuizSubmission() {
         int score = 0;
         List<QuestionHistoryModel> resultList = new ArrayList<>();
 
